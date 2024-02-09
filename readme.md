@@ -6,6 +6,11 @@
 - JWT tokenizaton
 - Metrics vizualization using Mongo extension for Grafana
 
+### Build
+```
+docker compose up
+```
+
 ### API
 
 > **Endpoint:** /,<br> **Method:** POST <br> **Usage example:**
