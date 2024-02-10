@@ -8,7 +8,7 @@ import (
 	"url-shortener/internal/storage"
 )
 
-func HandleDelete(c *fiber.Ctx, mgo *storage.Mongo) error {
+func HandleDelete(c *fiber.Ctx, memcached *storage.Memcached, mgo *storage.Mongo) error {
 	var payload models.UpdateRequest
 
 	if err := c.BodyParser(&payload); err != nil {
@@ -30,6 +30,7 @@ func HandleDelete(c *fiber.Ctx, mgo *storage.Mongo) error {
 		return c.JSON(fiber.Map{"err": errors.New("Not an author")})
 	}
 
+	_ = memcached.Delete(payload.Alias)
 	_, err = mgo.DeleteShortening(payload.Alias)
 
 	return c.JSON(fiber.Map{

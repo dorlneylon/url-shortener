@@ -15,10 +15,11 @@ import (
 )
 
 type App struct {
-	cfg   *config.Config
-	log   *slog.Logger
-	mongo *storage.Mongo
-	app   *fiber.App
+	cfg      *config.Config
+	log      *slog.Logger
+	mongo    *storage.Mongo
+	memcache *storage.Memcached
+	app      *fiber.App
 }
 
 func Init() *App {
@@ -29,10 +30,11 @@ func Init() *App {
 	})
 	auth.SetSecret(cfg.JwtSecret)
 	return &App{
-		cfg:   cfg,
-		log:   slog.Default(),
-		mongo: storage.NewMongo(cfg),
-		app:   app,
+		cfg:      cfg,
+		log:      slog.Default(),
+		mongo:    storage.NewMongo(cfg),
+		memcache: storage.NewMemcached(cfg),
+		app:      app,
 	}
 }
 
@@ -49,6 +51,9 @@ func (a *App) Run() {
 		if _, err := a.mongo.Disconnect(); err != nil {
 			a.log.Error("Database shutdown error: " + err.Error())
 		}
+		if err := a.memcache.Disconnect(); err != nil {
+			a.log.Error("Cache shutdown error: " + err.Error())
+		}
 	}()
 
 	a.ConfigureRoutes()
@@ -59,7 +64,7 @@ func (a *App) Run() {
 
 func (a *App) ConfigureRoutes() {
 	a.app.Get("/:alias", func(c *fiber.Ctx) error {
-		return handlers.HandleRedirect(c, a.mongo)
+		return handlers.HandleRedirect(c, a.memcache, a.mongo)
 	})
 	a.app.Post("/", func(c *fiber.Ctx) error {
 		return handlers.HandleSignUp(c, a.mongo)
@@ -68,9 +73,9 @@ func (a *App) ConfigureRoutes() {
 		return handlers.HandleSignIn(c, a.mongo)
 	})
 	a.app.Get("/", func(c *fiber.Ctx) error {
-		return handlers.HandleShorten(c, a.mongo)
+		return handlers.HandleShorten(c, a.memcache, a.mongo)
 	})
 	a.app.Delete("/", func(c *fiber.Ctx) error {
-		return handlers.HandleDelete(c, a.mongo)
+		return handlers.HandleDelete(c, a.memcache, a.mongo)
 	})
 }

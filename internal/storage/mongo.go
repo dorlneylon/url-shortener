@@ -16,7 +16,7 @@ type Mongo struct {
 }
 
 func NewMongo(cfg *config.Config) *Mongo {
-	addr := fmt.Sprintf("mongodb://%s:%s", cfg.Mongo.Host, cfg.Mongo.Port)
+	addr := fmt.Sprintf(cfg.Mongo.URI)
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(addr))
 	if err != nil {
 		panic(err)

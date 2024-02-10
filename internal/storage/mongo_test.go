@@ -11,8 +11,7 @@ func TestMongo(t *testing.T) {
 	cfg := config.Config{
 		Mongo: config.Mongo{
 			Database: "url-shortener",
-			Host:     "127.0.0.1",
-			Port:     "27017",
+			URI:      "mongodb://127.0.0.1:27017",
 			Username: "admin",
 			Password: "admin",
 		},
@@ -50,8 +49,7 @@ func TestMongoShortenings(t *testing.T) {
 	cfg := config.Config{
 		Mongo: config.Mongo{
 			Database: "url-shortener",
-			Host:     "127.0.0.1",
-			Port:     "27017",
+			URI:      "mongodb://127.0.0.1:27017",
 			Username: "admin",
 			Password: "admin",
 		},
@@ -87,8 +85,7 @@ func TestMongoUsers(t *testing.T) {
 	cfg := config.Config{
 		Mongo: config.Mongo{
 			Database: "url-shortener",
-			Host:     "127.0.0.1",
-			Port:     "27017",
+			URI:      "mongodb://127.0.0.1:27017",
 			Username: "admin",
 			Password: "admin",
 		},
@@ -123,8 +120,7 @@ func TestMongoIncrements(t *testing.T) {
 	cfg := config.Config{
 		Mongo: config.Mongo{
 			Database: "url-shortener",
-			Host:     "127.0.0.1",
-			Port:     "27017",
+			URI:      "mongodb://127.0.0.1:27017",
 			Username: "admin",
 			Password: "admin",
 		},

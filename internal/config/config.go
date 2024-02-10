@@ -7,18 +7,23 @@ import (
 )
 
 type Config struct {
-	Host      string `yaml:"host" env-default:"127.0.0.1"`
-	Port      string `yaml:"port" env-default:"3000"`
-	JwtSecret string `yaml:"jwt_secret" env-default:"secret"`
-	Mongo     Mongo  `yaml:"mongo"`
+	Host      string    `yaml:"host" env-default:"127.0.0.1"`
+	Port      string    `yaml:"port" env-default:"3000"`
+	JwtSecret string    `yaml:"jwt_secret" env-default:"secret"`
+	Memcached Memcached `yaml:"memcached"`
+	Mongo     Mongo     `yaml:"mongo"`
 }
 
 type Mongo struct {
 	Database string `yaml:"database" env-default:"url-shortener"`
-	Host     string `yaml:"host" env-default:"127.0.0.1"`
-	Port     string `yaml:"port" env-default:"27017"`
+	URI      string `yaml:"uri"`
 	Username string `yaml:"username" env-default:"admin"`
 	Password string `yaml:"password" env-default:"admin"`
+}
+
+type Memcached struct {
+	URI     string `yaml:"uri" env-default:"memcache://localhost:11211"`
+	MaxSize int    `yaml:"max_size" env-default:"1000"`
 }
 
 var configPath string

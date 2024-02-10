@@ -3,6 +3,7 @@ module url-shortener
 go 1.21.1
 
 require (
+	github.com/bradfitz/gomemcache v0.0.0-20230905024940-24af94b03874
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/goccy/go-json v0.10.2
 	github.com/gofiber/fiber/v2 v2.52.0

@@ -9,7 +9,7 @@ import (
 	"url-shortener/internal/storage"
 )
 
-func HandleShorten(c *fiber.Ctx, mgo *storage.Mongo) error {
+func HandleShorten(c *fiber.Ctx, memcached *storage.Memcached, mgo *storage.Mongo) error {
 	var (
 		payload models.ShortRequest
 	)
@@ -32,6 +32,7 @@ func HandleShorten(c *fiber.Ctx, mgo *storage.Mongo) error {
 		Timestamp: time.Now().Unix(),
 	}
 
+	err = memcached.Set(model.Alias, model.Url)
 	_, err = mgo.InsertShortening(model)
 
 	if err != nil {
