@@ -3,6 +3,7 @@
 
 - High perfomance data processing using memcached, MongoDB and GoFiber
 - HTTP/2 support
+- Load balancing for lower latency and better fault tolerance
 - JWT tokenizaton
 - Metrics vizualization using Mongo extension for Grafana
 
