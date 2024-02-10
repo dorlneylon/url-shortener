@@ -1,10 +1,11 @@
 package handlers
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"url-shortener/internal/models"
 	"url-shortener/internal/net/auth"
 	"url-shortener/internal/storage"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 func HandleSignUp(c *fiber.Ctx, mgo *storage.Mongo) error {

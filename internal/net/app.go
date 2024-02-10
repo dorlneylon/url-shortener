@@ -2,8 +2,7 @@ package net
 
 import (
 	"fmt"
-	"github.com/goccy/go-json"
-	"github.com/gofiber/fiber/v2"
+	"log"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -12,6 +11,9 @@ import (
 	"url-shortener/internal/handlers"
 	"url-shortener/internal/net/auth"
 	"url-shortener/internal/storage"
+
+	"github.com/goccy/go-json"
+	"github.com/gofiber/fiber/v2"
 )
 
 type App struct {
@@ -29,10 +31,14 @@ func Init() *App {
 		JSONDecoder: json.Unmarshal,
 	})
 	auth.SetSecret(cfg.JwtSecret)
+	mongo := storage.NewMongo(cfg)
+	if _, err := mongo.Ping(); err != nil {
+		log.Fatal(err)	
+	}
 	return &App{
 		cfg:      cfg,
 		log:      slog.Default(),
-		mongo:    storage.NewMongo(cfg),
+		mongo:    mongo,
 		memcache: storage.NewMemcached(cfg),
 		app:      app,
 	}

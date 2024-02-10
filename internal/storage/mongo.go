@@ -3,12 +3,13 @@ package storage
 import (
 	"context"
 	"fmt"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"time"
 	"url-shortener/internal/config"
 	"url-shortener/internal/models"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Mongo struct {
@@ -24,6 +25,12 @@ func NewMongo(cfg *config.Config) *Mongo {
 	return &Mongo{
 		db: client.Database(cfg.Mongo.Database),
 	}
+}
+
+func (m *Mongo) Ping() (interface{}, error) {
+	return withTimeout(func(ctx context.Context) (interface{}, error) {
+		return true, m.db.Client().Ping(ctx, nil)
+	})
 }
 
 func (m *Mongo) shortenings() *mongo.Collection {

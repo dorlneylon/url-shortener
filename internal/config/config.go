@@ -22,7 +22,7 @@ type Mongo struct {
 }
 
 type Memcached struct {
-	URI     string `yaml:"uri" env-default:"memcache://localhost:11211"`
+	URI     string `yaml:"uri" env-default:"localhost:11211"`
 	MaxSize int    `yaml:"max_size" env-default:"1000"`
 }
 
