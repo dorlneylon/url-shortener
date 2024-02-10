@@ -4,4 +4,4 @@ mongo:
   database: url-shortener
   uri: mongodb://localhost:27017
 memcached:
-  uri: localhost:11211?timeout=2&tcp_nodelay=true
+  uri: localhost:11211
